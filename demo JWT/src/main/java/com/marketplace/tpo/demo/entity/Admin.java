@@ -44,8 +44,7 @@ public class Admin implements UserDetails {
     @Column(nullable = false, unique = true)
     private String lastName;
 
-    @OneToMany(mappedBy = "admin")
-    private List<Order> orders;
+
 
     @Enumerated(EnumType.STRING)
     private Role role;
@@ -58,6 +57,11 @@ public class Admin implements UserDetails {
     @Override
     public String getUsername() {
         return email;
+    }
+    
+    @Override
+    public String getPassword() {
+        return password;
     }
 
     @Override

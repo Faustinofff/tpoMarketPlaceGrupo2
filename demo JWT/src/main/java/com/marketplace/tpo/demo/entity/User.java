@@ -41,7 +41,7 @@ public class User implements UserDetails {
 
     private String firstName;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String lastName;
 
     @OneToMany(mappedBy = "user")

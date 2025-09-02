@@ -53,7 +53,7 @@ public class Admin implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));
     }
-
+//para conseguir el username
     @Override
     public String getUsername() {
         return email;

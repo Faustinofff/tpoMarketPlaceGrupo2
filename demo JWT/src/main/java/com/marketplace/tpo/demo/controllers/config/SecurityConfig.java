@@ -31,7 +31,7 @@ public class SecurityConfig {
                                 .authorizeHttpRequests(req -> req.
                                 requestMatchers("/carrito/**").hasRole("USER")
                                 .requestMatchers("Product/{Id}").hasAnyRole("USER", "ADMIN")
-                                .requestMatchers(HttpMethod.POST,"categories").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.POST, "/categories").hasRole("ADMIN")
                                 .requestMatchers("/User/**").hasRole("ADMIN")
                                 .requestMatchers("/api/v1/auth/**")
                                                 .permitAll()

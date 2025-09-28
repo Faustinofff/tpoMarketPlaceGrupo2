@@ -47,12 +47,12 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user")
     private List<Order> orders;
 
-    @Enumerated(EnumType.STRING)
-    private Role role;
+    @Enumerated(jakarta.persistence.EnumType.STRING)
+private Role role;
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE_" + role.name()));
+@Override
+public Collection<? extends GrantedAuthority> getAuthorities() {
+    return List.of(new SimpleGrantedAuthority("ROLE_" + role.name())); // ROLE_USER / ROLE_SELLER / ROLE_ADMIN
 }
 
 

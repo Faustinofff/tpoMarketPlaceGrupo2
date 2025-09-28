@@ -25,23 +25,24 @@ public class SecurityConfig {
         private final AuthenticationProvider authenticationProvider;
 
         @Bean
-        public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-                http
-                                .csrf(AbstractHttpConfigurer::disable)
-                                .authorizeHttpRequests(req -> req.
-                                requestMatchers("/carrito/**").hasRole("USER")
-                                .requestMatchers("Product/{Id}").hasAnyRole("USER", "ADMIN")
-                                .requestMatchers(HttpMethod.POST, "/categories").hasRole("ADMIN")
-                                .requestMatchers("/User/**").hasRole("ADMIN")
-                                .requestMatchers("/api/v1/auth/**")
-                                                .permitAll()
-                                                .anyRequest()
-                                                .authenticated())
-                                .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
-                                .authenticationProvider(authenticationProvider)
-                                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    http
+        .csrf(AbstractHttpConfigurer::disable)
+        .authorizeHttpRequests(auth -> auth
+            .requestMatchers("/api/v1/auth/**").permitAll()              // público
+            .requestMatchers(HttpMethod.GET, "/products/**").permitAll() // catálogo público
+            .requestMatchers(HttpMethod.POST, "/products/**").hasAnyRole("SELLER","ADMIN")
+            .requestMatchers(HttpMethod.PATCH, "/products/**").hasAnyRole("SELLER","ADMIN")
+            .requestMatchers(HttpMethod.DELETE, "/products/**").hasAnyRole("SELLER","ADMIN")
+            .requestMatchers("/cart/**").hasRole("USER")
+            .anyRequest().authenticated()
+        )
+        .sessionManagement(s -> s.sessionCreationPolicy(STATELESS))
+        .authenticationProvider(authenticationProvider)
+        .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+    return http.build();
+}
 
-                return http.build();
-        }
+
 } //comentario
 

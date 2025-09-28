@@ -1,21 +1,17 @@
 package com.marketplace.tpo.demo.controllers.auth;
 
 import com.marketplace.tpo.demo.entity.Role;
-
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class RegisterRequest {
-
     private String firstname;
     private String lastname;
     private String email;
     private String password;
-    private Role role;
+    private Role role; // ENUM, no String
 }
+

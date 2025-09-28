@@ -16,32 +16,34 @@ import static org.springframework.security.config.http.SessionCreationPolicy.STA
 @EnableWebSecurity
 public class SecurityConfig {
 
-        private final JwtAuthenticationFilter jwtAuthFilter;
-        private final AuthenticationProvider authenticationProvider;
+    private final JwtAuthenticationFilter jwtAuthFilter;
+    private final AuthenticationProvider authenticationProvider;
 
-        public SecurityConfig(JwtAuthenticationFilter jwtAuthFilter,
-                        AuthenticationProvider authenticationProvider) {
+    public SecurityConfig(JwtAuthenticationFilter jwtAuthFilter,
+                          AuthenticationProvider authenticationProvider) {
         this.jwtAuthFilter = jwtAuthFilter;
         this.authenticationProvider = authenticationProvider;
-}
+    }
 
-        @Bean
-public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-        .csrf(org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer::disable)
-        .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/v1/auth/**").permitAll()                  // PÚBLICO
-                .requestMatchers(org.springframework.http.HttpMethod.GET, "/products/**").permitAll()
-                .requestMatchers(org.springframework.http.HttpMethod.POST, "/products/**").hasAnyRole("SELLER","ADMIN")
-                .requestMatchers(org.springframework.http.HttpMethod.PATCH, "/products/**").hasAnyRole("SELLER","ADMIN")
-                .requestMatchers(org.springframework.http.HttpMethod.DELETE, "/products/**").hasAnyRole("SELLER","ADMIN")
+            .csrf(AbstractHttpConfigurer::disable)
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers("/api/v1/auth/**").permitAll()                 // público
+                .requestMatchers(HttpMethod.GET, "/products/**").permitAll()    // catálogo público
+                .requestMatchers(HttpMethod.POST,   "/products/**").hasAnyRole("SELLER","ADMIN")
+                .requestMatchers(HttpMethod.PATCH,  "/products/**").hasAnyRole("SELLER","ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/products/**").hasAnyRole("SELLER","ADMIN")
                 .requestMatchers("/cart/**").hasRole("USER")
                 .anyRequest().authenticated()
-        )
-        .sessionManagement(s -> s.sessionCreationPolicy(org.springframework.security.config.http.SessionCreationPolicy.STATELESS))
-        .authenticationProvider(authenticationProvider)
-        .addFilterBefore(jwtAuthFilter, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter.class);
-return http.build();
-}}
- //comentario
+            )
+            .sessionManagement(s -> s.sessionCreationPolicy(STATELESS))
+            .authenticationProvider(authenticationProvider)
+            .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+
+        return http.build();
+    }
+}
+
 

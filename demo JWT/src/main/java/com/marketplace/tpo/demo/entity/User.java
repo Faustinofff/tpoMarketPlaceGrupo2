@@ -48,12 +48,15 @@ public class User implements UserDetails {
     private List<Order> orders;
 
     @Enumerated(jakarta.persistence.EnumType.STRING)
+@Column(nullable = false)
 private Role role;
 
 @Override
-public Collection<? extends GrantedAuthority> getAuthorities() {
-    return List.of(new SimpleGrantedAuthority("ROLE_" + role.name())); // ROLE_USER / ROLE_SELLER / ROLE_ADMIN
+public Collection<? extends org.springframework.security.core.GrantedAuthority> getAuthorities() {
+    return java.util.List.of(new org.springframework.security.core.authority.SimpleGrantedAuthority("ROLE_" + role.name()));
 }
+
+
 
 
     @Override

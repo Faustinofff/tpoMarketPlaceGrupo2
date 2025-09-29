@@ -33,10 +33,10 @@ public class User implements UserDetails {
     private Role role;
 
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        // ROLE_USER / ROLE_SELLER / ROLE_ADMIN
-        return List.of(new SimpleGrantedAuthority("ROLE_" + role.name()));
-    }
+public Collection<? extends GrantedAuthority> getAuthorities() {
+    // Debe devolver ROLE_USER / ROLE_SELLER / ROLE_ADMIN
+    return List.of(new SimpleGrantedAuthority("ROLE_" + role.name()));
+}
 
     @Override public String getUsername() { return email; }
     @Override public boolean isAccountNonExpired() { return true; }

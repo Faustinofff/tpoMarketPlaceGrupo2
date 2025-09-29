@@ -15,6 +15,9 @@ public class Product {
 
     @Column(length = 2000)
     private String description;
+    // en com.marketplace.tpo.demo.entity.Product
+    
+
 
     @ManyToOne
     @JoinColumn(name = "category_id")
